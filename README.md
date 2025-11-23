@@ -119,16 +119,6 @@ hepatitis_AI/
     └── templates/         # HTML
 ```
 
-## ⚠️ Aviso Legal
-
-Este sistema es una herramienta educativa y **NO reemplaza el diagnóstico médico profesional**. Siempre consulte con un profesional de la salud.
-
-## 📚 Documentación Adicional
-
-- `GUIA_DESPLIEGUE.md` - Guía detallada de despliegue
-- `CASOS_PRUEBA_RAPIDA.md` - Casos de prueba completos
-- `ARQUITECTURA.md` - Diagramas técnicos
-
 ---
 
 **Proyecto educativo AI** - By Jenn
