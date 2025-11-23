@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Predicción de Hepatitis - IA</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="header-title">
+          <span class="icon">🏥</span>
+          <div>
+            <h1>Predicción de Hepatitis By: Jenn</h1>
+            <div class="subtitle">Sistema de predicción con {{ info.get("modelo", "Modelo de IA") }}</div>
+          </div>
+        </div>
+
+        <form id="form" method="post" action="/predict">
+          <!-- Información Demográfica -->
+          <div class="section-title">📋 Información Demográfica</div>
+          <div class="grid">
+            <div class="field-group">
+              <label for="Age">
+                Edad
+                <span class="tooltip" data-tip="Edad del paciente en años">?</span>
+              </label>
+              <input id="Age" name="Age" type="number" required placeholder="Ej: 45" min="0" max="120" step="1" />
+              <div class="hint">Edad en años (0-120)</div>
+            </div>
+
+            <div class="field-group">
+              <label for="Sex">
+                Sexo
+                <span class="tooltip" data-tip="Sexo biológico del paciente">?</span>
+              </label>
+              <select id="Sex" name="Sex" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">Masculino</option>
+                <option value="2">Femenino</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Estado_Civil">
+                Estado Civil
+                <span class="tooltip" data-tip="Estado civil del paciente">?</span>
+              </label>
+              <select id="Estado_Civil" name="Estado_Civil" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">Soltero/a</option>
+                <option value="2">Casado/a</option>
+                <option value="3">Divorciado/a</option>
+                <option value="4">Viudo/a</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Ciudad">
+                Ciudad de Residencia
+                <span class="tooltip" data-tip="Ciudad donde reside el paciente">?</span>
+              </label>
+              <select id="Ciudad" name="Ciudad" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">Bogotá</option>
+                <option value="2">Medellín</option>
+                <option value="3">Cali</option>
+                <option value="4">Barranquilla</option>
+                <option value="5">Cartagena</option>
+                <option value="6">Bucaramanga</option>
+                <option value="7">Pereira</option>
+                <option value="8">Santa Marta</option>
+                <option value="9">Manizales</option>
+                <option value="10">Cúcuta</option>
+                <option value="11">Ibagué</option>
+                <option value="12">Otra ciudad</option>
+              </select>
+              <div class="hint">Ciudad de residencia del paciente</div>
+            </div>
+          </div>
+
+          <!-- Tratamientos -->
+          <div class="section-title">💊 Tratamientos</div>
+          <div class="grid">
+            <div class="field-group">
+              <label for="Steroid">
+                Esteroides
+                <span class="tooltip" data-tip="¿El paciente toma esteroides?">?</span>
+              </label>
+              <select id="Steroid" name="Steroid" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Antivirals">
+                Antivirales
+                <span class="tooltip" data-tip="¿El paciente toma antivirales?">?</span>
+              </label>
+              <select id="Antivirals" name="Antivirals" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Síntomas -->
+          <div class="section-title">🩺 Síntomas</div>
+          <div class="grid">
+            <div class="field-group">
+              <label for="Fatigue">
+                Fatiga
+                <span class="tooltip" data-tip="¿Presenta fatiga?">?</span>
+              </label>
+              <select id="Fatigue" name="Fatigue" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Malaise">
+                Malestar General
+                <span class="tooltip" data-tip="¿Presenta malestar general?">?</span>
+              </label>
+              <select id="Malaise" name="Malaise" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Anorexia">
+                Anorexia
+                <span class="tooltip" data-tip="¿Presenta pérdida de apetito?">?</span>
+              </label>
+              <select id="Anorexia" name="Anorexia" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Examen Físico -->
+          <div class="section-title">🔬 Examen Físico</div>
+          <div class="grid">
+            <div class="field-group">
+              <label for="Liver_Big">
+                Hígado Agrandado
+                <span class="tooltip" data-tip="¿El hígado está agrandado?">?</span>
+              </label>
+              <select id="Liver_Big" name="Liver_Big" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Liver_Firm">
+                Hígado Firme
+                <span class="tooltip" data-tip="¿El hígado está firme al tacto?">?</span>
+              </label>
+              <select id="Liver_Firm" name="Liver_Firm" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Spleen_Palpable">
+                Bazo Palpable
+                <span class="tooltip" data-tip="¿El bazo es palpable?">?</span>
+              </label>
+              <select id="Spleen_Palpable" name="Spleen_Palpable" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Spiders">
+                Arañas Vasculares
+                <span class="tooltip" data-tip="¿Presenta arañas vasculares?">?</span>
+              </label>
+              <select id="Spiders" name="Spiders" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Ascites">
+                Ascitis
+                <span class="tooltip" data-tip="¿Presenta acumulación de líquido abdominal?">?</span>
+              </label>
+              <select id="Ascites" name="Ascites" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="Varices">
+                Várices Esofágicas
+                <span class="tooltip" data-tip="¿Presenta várices esofágicas?">?</span>
+              </label>
+              <select id="Varices" name="Varices" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Análisis de Laboratorio -->
+          <div class="section-title">🧪 Análisis de Laboratorio</div>
+          <div class="grid">
+            <div class="field-group">
+              <label for="Bilirubin">
+                Bilirrubina
+                <span class="tooltip" data-tip="Nivel de bilirrubina en sangre">?</span>
+              </label>
+              <input id="Bilirubin" name="Bilirubin" type="number" required placeholder="Ej: 1.2" step="0.01" min="0" />
+              <div class="hint">mg/dL (valores normales: 0.1-1.2)</div>
+            </div>
+
+            <div class="field-group">
+              <label for="Alk_Phosphate">
+                Fosfatasa Alcalina
+                <span class="tooltip" data-tip="Nivel de fosfatasa alcalina">?</span>
+              </label>
+              <input id="Alk_Phosphate" name="Alk_Phosphate" type="number" required placeholder="Ej: 85" step="1" min="0" />
+              <div class="hint">U/L (valores normales: 30-120)</div>
+            </div>
+
+            <div class="field-group">
+              <label for="Sgot">
+                SGOT (AST)
+                <span class="tooltip" data-tip="Aspartato aminotransferasa">?</span>
+              </label>
+              <input id="Sgot" name="Sgot" type="number" required placeholder="Ej: 40" step="1" min="0" />
+              <div class="hint">U/L (valores normales: 10-40)</div>
+            </div>
+
+            <div class="field-group">
+              <label for="Albumin">
+                Albúmina
+                <span class="tooltip" data-tip="Nivel de albúmina en sangre">?</span>
+              </label>
+              <input id="Albumin" name="Albumin" type="number" required placeholder="Ej: 4.0" step="0.01" min="0" />
+              <div class="hint">g/dL (valores normales: 3.5-5.5)</div>
+            </div>
+
+            <div class="field-group">
+              <label for="Protime">
+                Tiempo de Protrombina
+                <span class="tooltip" data-tip="Tiempo de coagulación">?</span>
+              </label>
+              <input id="Protime" name="Protime" type="number" required placeholder="Ej: 12" step="1" min="0" />
+              <div class="hint">segundos (valores normales: 11-13.5)</div>
+            </div>
+
+            <div class="field-group">
+              <label for="Histology">
+                Histología
+                <span class="tooltip" data-tip="¿Se realizó biopsia hepática?">?</span>
+              </label>
+              <select id="Histology" name="Histology" required>
+                <option value="">Seleccionar...</option>
+                <option value="1">No</option>
+                <option value="2">Sí</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 30px;">
+            <button type="submit" style="min-width: 300px; font-size: 18px; padding: 16px 32px;">🔍 Realizar Predicción</button>
+          </div>
+        </form>
+
+        <footer>
+          Modelo: {{ info.get("modelo","-") }} | Características: {{ feature_names|length }} | Precisión: {{ (info.get("metricas_test", {}).get("accuracy", 0) * 100) | round(1) }}%
+        </footer>
+      </div>
+    </div>
+
+
+  </body>
+</html>

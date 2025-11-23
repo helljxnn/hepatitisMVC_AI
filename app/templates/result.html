@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Resultado de Predicción - Hepatitis IA</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        {% if result.error %}
+        <div class="header">
+          <div class="icon">❌</div>
+          <h1>Error en la Predicción</h1>
+        </div>
+        <div class="error-box">
+          <strong>Error:</strong> {{ result.error }}
+        </div>
+        <div class="button-group">
+          <a href="{{ url_for('index') }}" class="btn btn-primary">🔙 Volver al Formulario</a>
+        </div>
+        {% else %}
+        <div class="header">
+          <div class="icon">{% if result.prediction == 1 %}⚠️{% else %}✅{% endif %}</div>
+          <h1>Resultado de la Predicción</h1>
+        </div>
+
+        <div class="result-box {% if result.prediction == 0 %}result-negative{% else %}result-positive{% endif %}">
+          {% if result.prediction == 0 %}
+            ✅ NEGATIVO - Sin Riesgo Aparente
+          {% else %}
+            ⚠️ POSITIVO - Riesgo de Hepatitis Detectado
+          {% endif %}
+        </div>
+
+        {% if result.predicted_probability is not none %}
+        <div class="confidence">
+          Confianza de la predicción:<br>
+          <span class="confidence-value">{{ (result.predicted_probability * 100) | round(2) }}%</span>
+        </div>
+        {% endif %}
+
+        <div class="interpretation">
+          <div class="interpretation-title">📋 Interpretación</div>
+          {% if result.prediction == 0 %}
+            <p>El modelo indica un <strong>resultado negativo</strong>, lo que sugiere que no hay indicadores significativos de hepatitis según los datos proporcionados. Sin embargo, esto no reemplaza una evaluación médica profesional.</p>
+          {% else %}
+            <p>El modelo ha detectado un <strong>riesgo positivo de hepatitis</strong> basado en los datos proporcionados. Se recomienda consultar con un profesional médico para realizar pruebas adicionales y confirmar el diagnóstico.</p>
+          {% endif %}
+        </div>
+
+        {% if result.probabilities %}
+        <div class="section-title">📊 Distribución de Probabilidades</div>
+        <div class="prob-row">
+          <div class="prob-label">
+            <span>✅ Negativo (Sin Hepatitis)</span>
+            <span>{{ (result.probabilities[0] * 100) | round(2) }}%</span>
+          </div>
+          <div class="bar-bg">
+            {% set pct_neg = (result.probabilities[0] * 100) | round(2) %}
+            <div class="bar" style="width: {{ pct_neg }}%;">
+              {% if result.probabilities[0] > 0.1 %}{{ pct_neg }}%{% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-label">
+            <span>⚠️ Positivo (Con Hepatitis)</span>
+            <span>{{ (result.probabilities[1] * 100) | round(2) }}%</span>
+          </div>
+          <div class="bar-bg">
+            {% set pct_pos = (result.probabilities[1] * 100) | round(2) %}
+            {% if result.probabilities[1] > 0.5 %}
+            <div class="bar" style="width: {{ pct_pos }}%; background: linear-gradient(90deg, #ff6b6b 0%, #ee5a6f 100%);">
+            {% else %}
+            <div class="bar" style="width: {{ pct_pos }}%;">
+            {% endif %}
+              {% if result.probabilities[1] > 0.1 %}{{ pct_pos }}%{% endif %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <details class="details">
+          <summary style="cursor: pointer; font-weight: 600; color: #334155;">🔍 Ver Detalles Técnicos</summary>
+          <pre>{{ result }}</pre>
+        </details>
+
+        <div class="button-group">
+          <a href="{{ url_for('index') }}" class="btn btn-primary">🔄 Nueva Predicción</a>
+        </div>
+
+        <div style="margin-top: 25px; padding: 15px; background: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b;">
+          <strong>⚠️ Aviso Importante:</strong> Este sistema es una herramienta de apoyo y no reemplaza el diagnóstico médico profesional. Siempre consulte con un profesional de la salud calificado.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
