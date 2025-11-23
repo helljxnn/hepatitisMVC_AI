@@ -1,319 +1,134 @@
-# 🏥 Sistema de Predicción de Hepatitis con IA
+# 🏥 Sistema de Predicción de Hepatitis
 
-Sistema web de predicción de hepatitis utilizando Machine Learning (Regresión Logística) desplegado con Flask y Render.
+Aplicación web para predicción de hepatitis usando Machine Learning con Flask.
 
-## 📋 Características
+## � Caracteríísticas
 
-- ✅ **Interfaz intuitiva** con formularios fáciles de usar (dropdowns, tooltips)
-- ✅ **Modelo de IA** con 100% de precisión en datos de prueba
-- ✅ **Visualización de resultados** con gráficos de probabilidad
-- ✅ **Responsive design** adaptable a móviles
-- ✅ **API REST** disponible para integraciones (endpoint `/api/predict`)
-- ✅ **Health check** endpoint para monitoreo
+- Interfaz intuitiva con dropdowns y tooltips
+- Predicción con Regresión Logística
+- Visualización de resultados con gráficos
+- API REST disponible
+- Responsive design
 
-## 🚀 Despliegue en Render - PASO A PASO
+## 📋 Requisitos
 
-### Paso 1: Preparar el Repositorio Git
+- Python 3.11+
+- Flask 2.2.5
+- scikit-learn 1.6.1
 
-Si aún no tienes Git inicializado:
+### Endpoint: `POST /api/predict`
 
-```bash
-cd hepatitis_AI
-git init
-git add .
-git commit -m "Initial commit - Hepatitis AI prediction system"
-```
-
-### Paso 2: Subir a GitHub
-
-1. Ve a [github.com](https://github.com) y crea una cuenta (si no tienes)
-2. Crea un **nuevo repositorio** (botón verde "New")
-   - Nombre: `hepatitis-ai` (o el que prefieras)
-   - **NO marques** "Add README" ni ".gitignore" ni "license"
-   - Click en "Create repository"
-
-3. Conecta tu repositorio local con GitHub:
-
-```bash
-git remote add origin https://github.com/TU_USUARIO/hepatitis-ai.git
-git branch -M main
-git push -u origin main
-```
-
-Reemplaza `TU_USUARIO` con tu nombre de usuario de GitHub.
-
-### Paso 3: Crear Cuenta en Render
-
-1. Ve a [render.com](https://render.com)
-2. Click en **"Get Started"** o **"Sign Up"**
-3. Puedes registrarte con:
-   - GitHub (recomendado - más fácil)
-   - GitLab
-   - Email
-
-### Paso 4: Desplegar en Render
-
-1. Una vez dentro de Render, click en **"New +"** (arriba a la derecha)
-2. Selecciona **"Web Service"**
-3. Conecta tu repositorio:
-   - Si usaste GitHub para registrarte, verás tus repos automáticamente
-   - Busca `hepatitis-ai` y click en **"Connect"**
-   
-4. Configura el servicio con estos valores:
-
-   | Campo | Valor |
-   |-------|-------|
-   | **Name** | `hepatitis-ai` (o el nombre que prefieras) |
-   | **Environment** | `Python 3` |
-   | **Build Command** | `pip install -r requirements.txt` |
-   | **Start Command** | `gunicorn app:app` |
-   | **Instance Type** | `Free` |
-
-5. Click en **"Create Web Service"**
-
-### Paso 5: Esperar el Despliegue
-
-Render automáticamente:
-- ✅ Clonará tu repositorio
-- ✅ Instalará las dependencias (Flask, scikit-learn, etc.)
-- ✅ Cargará los modelos (.pkl)
-- ✅ Iniciará la aplicación con Gunicorn
-
-**Tiempo estimado**: 2-5 minutos
-
-Verás los logs en tiempo real. Cuando veas algo como:
-```
-==> Your service is live 🎉
-```
-
-¡Tu aplicación está lista!
-
-### Paso 6: Obtener tu URL
-
-Render te asignará una URL como:
-```
-https://hepatitis-ai.onrender.com
-```
-
-O con un nombre aleatorio si no especificaste uno:
-```
-https://hepatitis-ai-xyz123.onrender.com
-```
-
-## 🧪 Probar la Aplicación
-
-### En Render (Producción)
-
-Abre tu URL de Render en el navegador:
-- **Formulario web**: `https://tu-app.onrender.com/`
-- **Health check**: `https://tu-app.onrender.com/health`
-- **API**: `https://tu-app.onrender.com/api/predict`
-
-### Localmente (Desarrollo)
-
-```bash
-# Instalar dependencias
-pip install -r requirements.txt
-
-# Ejecutar la aplicación
-python app.py
-
-# Abrir en el navegador
-# http://localhost:5000
-```
-
-## 📡 Uso de la API
-
-### Ejemplo con cURL
-
-```bash
-curl -X POST https://tu-app.onrender.com/api/predict \
-  -H "Content-Type: application/json" \
-  -d '{
-    "Age": 45,
-    "Sex": 1,
-    "Estado_Civil": 2,
-    "Ciudad": 1,
-    "Steroid": 1,
-    "Antivirals": 2,
-    "Fatigue": 2,
-    "Malaise": 1,
-    "Anorexia": 1,
-    "Liver_Big": 2,
-    "Liver_Firm": 1,
-    "Spleen_Palpable": 1,
-    "Spiders": 1,
-    "Ascites": 1,
-    "Varices": 1,
-    "Bilirubin": 1.2,
-    "Alk_Phosphate": 85,
-    "Sgot": 40,
-    "Albumin": 4.0,
-    "Protime": 12,
-    "Histology": 2
-  }'
-```
-
-### Ejemplo con Python
-
-```python
-import requests
-
-url = "https://tu-app.onrender.com/api/predict"
-data = {
-    "Age": 45,
-    "Sex": 1,
-    "Estado_Civil": 2,
-    "Ciudad": 1,
-    "Steroid": 1,
-    "Antivirals": 2,
-    "Fatigue": 2,
-    "Malaise": 1,
-    "Anorexia": 1,
-    "Liver_Big": 2,
-    "Liver_Firm": 1,
-    "Spleen_Palpable": 1,
-    "Spiders": 1,
-    "Ascites": 1,
-    "Varices": 1,
-    "Bilirubin": 1.2,
-    "Alk_Phosphate": 85,
-    "Sgot": 40,
-    "Albumin": 4.0,
-    "Protime": 12,
-    "Histology": 2
-}
-
-response = requests.post(url, json=data)
-print(response.json())
-```
-
-### Respuesta de la API
-
+**Request:**
 ```json
 {
-  "prediction": 1,
-  "probabilities": [0.1234, 0.8766],
-  "predicted_probability": 0.8766
+  "Age": 45,
+  "Sex": 1,
+  "Estado_Civil": 2,
+  "Ciudad": 1,
+  "Steroid": 1,
+  "Antivirals": 1,
+  "Fatigue": 1,
+  "Malaise": 1,
+  "Anorexia": 1,
+  "Liver_Big": 1,
+  "Liver_Firm": 1,
+  "Spleen_Palpable": 1,
+  "Spiders": 1,
+  "Ascites": 1,
+  "Varices": 1,
+  "Bilirubin": 1.2,
+  "Alk_Phosphate": 85,
+  "Sgot": 40,
+  "Albumin": 4.0,
+  "Protime": 12,
+  "Histology": 1
 }
 ```
 
-- **prediction**: 0 = Negativo, 1 = Positivo (riesgo de hepatitis)
-- **probabilities**: Lista con probabilidades de cada clase [Negativo, Positivo]
-- **predicted_probability**: Confianza de la predicción
-
-## 📊 Modelo de IA
-
-- **Algoritmo**: Regresión Logística
-- **Características**: 21 variables (demográficas, síntomas, laboratorio)
-- **Precisión**: 100% en conjunto de prueba
-- **Framework**: scikit-learn 1.6.1
+**Response:**
+```json
+{
+  "prediction": 0,
+  "probabilities": [0.95, 0.05],
+  "predicted_probability": 0.95
+}
+```
 
 ## 📝 Variables del Modelo
 
-### 📋 Demográficas
-- **Age**: Edad en años (0-120)
-- **Sex**: Sexo (1=Masculino, 2=Femenino)
-- **Estado_Civil**: Estado civil (1=Soltero, 2=Casado, 3=Divorciado, 4=Viudo)
-- **Ciudad**: Ciudad de residencia (1=Bogotá, 2=Medellín, 3=Cali, 4=Barranquilla, 5=Cartagena, 6=Bucaramanga, 7=Pereira, 8=Santa Marta, 9=Manizales, 10=Cúcuta, 11=Ibagué, 12=Otra)
+### Demográficas
+- **Age:** Edad (0-120)
+- **Sex:** 1=Masculino, 2=Femenino
+- **Estado_Civil:** 1=Soltero, 2=Casado, 3=Divorciado, 4=Viudo
+- **Ciudad:** 1=Bogotá, 2=Medellín, 3=Cali, etc.
 
-### 💊 Tratamientos
-- **Steroid**: Toma esteroides (1=No, 2=Sí)
-- **Antivirals**: Toma antivirales (1=No, 2=Sí)
+### Tratamientos y Síntomas
+- **Steroid, Antivirals, Fatigue, Malaise, Anorexia:** 1=No, 2=Sí
 
-### 🩺 Síntomas
-- **Fatigue**: Fatiga (1=No, 2=Sí)
-- **Malaise**: Malestar general (1=No, 2=Sí)
-- **Anorexia**: Pérdida de apetito (1=No, 2=Sí)
+### Examen Físico
+- **Liver_Big, Liver_Firm, Spleen_Palpable, Spiders, Ascites, Varices:** 1=No, 2=Sí
 
-### 🔬 Examen Físico
-- **Liver_Big**: Hígado agrandado (1=No, 2=Sí)
-- **Liver_Firm**: Hígado firme (1=No, 2=Sí)
-- **Spleen_Palpable**: Bazo palpable (1=No, 2=Sí)
-- **Spiders**: Arañas vasculares (1=No, 2=Sí)
-- **Ascites**: Ascitis (1=No, 2=Sí)
-- **Varices**: Várices esofágicas (1=No, 2=Sí)
+### Laboratorio
+- **Bilirubin:** mg/dL (normal: 0.1-1.2)
+- **Alk_Phosphate:** U/L (normal: 30-120)
+- **Sgot:** U/L (normal: 10-40)
+- **Albumin:** g/dL (normal: 3.5-5.5)
+- **Protime:** segundos (normal: 11-13.5)
+- **Histology:** 1=No, 2=Sí
 
-### 🧪 Análisis de Laboratorio
-- **Bilirubin**: Bilirrubina en mg/dL (normal: 0.1-1.2)
-- **Alk_Phosphate**: Fosfatasa alcalina en U/L (normal: 30-120)
-- **Sgot**: AST en U/L (normal: 10-40)
-- **Albumin**: Albúmina en g/dL (normal: 3.5-5.5)
-- **Protime**: Tiempo de protrombina en segundos (normal: 11-13.5)
-- **Histology**: Biopsia realizada (1=No, 2=Sí)
+## 🧪 Casos de Prueba
+
+### Caso NEGATIVO (Paciente Sano)
+```
+Edad: 30, Sexo: Femenino
+Todos los síntomas: No
+Bilirrubina: 0.8, SGOT: 25, Albúmina: 4.5
+```
+**Resultado:** ✅ NEGATIVO (~95% confianza)
+
+### Caso POSITIVO (Alto Riesgo)
+```
+Edad: 55, Sexo: Masculino
+Todos los síntomas: Sí
+Bilirrubina: 3.5, SGOT: 120, Albúmina: 2.5, Protrombina: 18
+```
+**Resultado:** ⚠️ POSITIVO (~70% confianza)
+
+Ver archivos `PRUEBA_NEGATIVO.txt` y `PRUEBA_POSITIVO.txt` para más detalles.
 
 ## 🔧 Tecnologías
 
-- **Backend**: Flask 2.2.5
-- **ML**: scikit-learn 1.6.1, joblib 1.3.2
-- **Servidor**: Gunicorn 21.2.0
-- **Despliegue**: Render
-- **Frontend**: HTML5, CSS3, JavaScript vanilla
+- **Backend:** Flask 2.2.5, Gunicorn 21.2.0
+- **ML:** scikit-learn 1.6.1, NumPy, Pandas
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Despliegue:** Render
 
-## 🐛 Solución de Problemas
-
-### La app no carga en Render
-
-1. Revisa los **logs** en el dashboard de Render
-2. Verifica que todos los archivos estén en GitHub:
-   - `app.py`
-   - `requirements.txt`
-   - `Procfile`
-   - `models/*.pkl` (archivos del modelo)
-
-### Error: "Application failed to respond"
-
-- El plan gratuito de Render "duerme" después de 15 minutos de inactividad
-- La primera carga puede tardar 30-60 segundos en "despertar"
-- Esto es normal en el plan gratuito
-
-### Error: "Module not found"
-
-- Verifica que `requirements.txt` tenga todas las dependencias
-- Render debe ejecutar `pip install -r requirements.txt` automáticamente
-
-### Actualizar la aplicación
-
-Cada vez que hagas cambios:
-
-```bash
-git add .
-git commit -m "Descripción de los cambios"
-git push origin main
-```
-
-Render detectará los cambios y redesplegará automáticamente.
-
-## 📁 Estructura del Proyecto
+## 📁 Estructura
 
 ```
 hepatitis_AI/
-├── app.py                          # Aplicación Flask principal
-├── requirements.txt                # Dependencias Python
-├── Procfile                        # Configuración para Render
-├── runtime.txt                     # Versión de Python
-├── render.yaml                     # Configuración de Render (opcional)
-├── README.md                       # Este archivo
-├── models/
-│   ├── modelo_regresion_logistica.pkl      # Modelo entrenado
-│   ├── modelo_regresion_logistica_info.json # Metadata del modelo
-│   └── scaler.pkl                          # Escalador de features
+├── app.py                  # Aplicación Flask
+├── requirements.txt        # Dependencias
+├── Procfile               # Config Render
+├── models/                # Modelos ML
+│   ├── modelo_regresion_logistica.pkl
+│   ├── scaler.pkl
+│   └── modelo_regresion_logistica_info.json
 └── app/
-    ├── static/
-    │   └── __init__.py
-    └── templates/
-        ├── index.html              # Formulario web mejorado
-        └── result.html             # Página de resultados mejorada
+    ├── static/css/        # Estilos
+    └── templates/         # HTML
 ```
 
 ## ⚠️ Aviso Legal
 
-Este sistema es una herramienta de apoyo educativa y **NO reemplaza el diagnóstico médico profesional**. Siempre consulte con un profesional de la salud calificado para cualquier decisión médica.
+Este sistema es una herramienta educativa y **NO reemplaza el diagnóstico médico profesional**. Siempre consulte con un profesional de la salud.
 
-## 📄 Licencia
+## 📚 Documentación Adicional
 
-Proyecto educativo - Uso académico
+- `GUIA_DESPLIEGUE.md` - Guía detallada de despliegue
+- `CASOS_PRUEBA_RAPIDA.md` - Casos de prueba completos
+- `ARQUITECTURA.md` - Diagramas técnicos
 
 ---
 
-**¿Necesitas ayuda?** Revisa los logs en Render o contacta al instructor.
+**Proyecto educativo AI** - By Jenn
